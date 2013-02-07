@@ -3,7 +3,7 @@
 
 class Observer(object):
     def update(self, event):
-        pass
+        raise NotImplementedError
 
 class Observable(object):
     def __init__(self):
@@ -22,16 +22,26 @@ class Achievement(Observer):
         self.counter = 0
     def update(self, event):
         self.counter += event
-        self.check()
-    def check(self):
+        if self.isEarned():
+            print "go nuts"
+    def isEarned(self):
         if self.counter > 10:
-            print "got a prize"
+            return True
         else:
-            print "keep working"
+            return False
 
 class Gun(Observable):
+    def __init__(self):
+        super(Gun, self).__init__()
+        self.munition = 3
+
+    def loaded(self):
+        return (munition > 0)
+
     def fire(self):
-        print "fired"
+        if not self.loaded:
+            return
+        self.munition -= 1
         self.notify(9)
 
 
