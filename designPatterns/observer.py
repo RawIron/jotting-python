@@ -17,14 +17,14 @@ class Observable(object):
             subscriber.update(event)
 
 
-class Achievement(Observer):
+class Achievement(object):
     def __init__(self):
         self.counter = 0
     def update(self, event):
         self.counter += event
-        if self.isEarned():
+        if self.is_earned():
             print "go nuts"
-    def isEarned(self):
+    def is_earned(self):
         if self.counter > 10:
             return True
         else:
@@ -36,7 +36,7 @@ class Gun(Observable):
         self.munition = 3
 
     def loaded(self):
-        return (munition > 0)
+        return (self.munition > 0)
 
     def fire(self):
         if not self.loaded:
