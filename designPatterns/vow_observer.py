@@ -25,13 +25,27 @@ class Achievements(Vows.Context):
                 expect(topic.is_earned()).to_be_false()
 
 
+        class ForAGunFiredTwice(Vows.Context):
+            def topic(self, achievement):
+                g = Gun()
+                g.subscribe(achievement)
+                g.fire()
+                g.fire()
+                return achievement
+
+            def should_be_given(self, topic):
+                expect(topic.is_earned()).to_be_true()
+
+
+
+
 @Vows.batch
 class Guns(Vows.Context):
     class AGun(Vows.Context):
         def topic(self):
             return Gun()
 
-        def should_not_be_loaded(self, topic):
+        def should_be_loaded(self, topic):
             expect(topic.loaded()).to_be_true()
 
 

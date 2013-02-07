@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 
 class Observer(object):
     def update(self, event):
@@ -19,13 +17,15 @@ class Observable(object):
 
 class Achievement(object):
     def __init__(self):
+        self.threshold = 10
         self.counter = 0
+        self.level = 1
     def update(self, event):
         self.counter += event
         if self.is_earned():
-            print "go nuts"
+            self.level += 1
     def is_earned(self):
-        if self.counter > 10:
+        if self.counter > self.threshold:
             return True
         else:
             return False
@@ -43,14 +43,4 @@ class Gun(Observable):
             return
         self.munition -= 1
         self.notify(9)
-
-
-if __name__ == '__main__':
-    watch = Achievement()
-    g = Gun()
-    g.subscribe(watch)
-    g.fire()
-    g.fire()
-    g.unsubscribe(watch)
-    g.fire()
 
