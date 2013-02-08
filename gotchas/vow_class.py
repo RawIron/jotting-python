@@ -1,57 +1,85 @@
 
 from pyvows import Vows, expect
 
-class ClassesThatInheritFromSuperclass(Vows.Context):
+
+@Vows.batch
+class KlassesThatInheritFromSuperklass(Vows.Context):
+
     def topic(self):
+        class SuperKlass(object):
+            def parent_method(self):
+                return True
+            def _invisible(self):
+                return False
 
-    def cannot_overload(self, topic):
+        class SubKlass(SuperKlass):
+            def parent_method(self):
+                return False
 
-    def cannot_overwrite(self, topic):
+        return SubKlass()
+
+    def can_override(self, topic):
+        expect(topic.parent_method()).to_be_false()
 
     def can_see_underscored_names(self, topic):
+        expect(topic._invisible()).to_be_false()
 
 
+@Vows.batch
+class KlassesWithoutInit(Vows.Context):
 
-class ClassesWithoutInit(Vows.Context):
     def topic(self):
-        class no_init(object):
-            self.no_init
-            self.global = 23
+        class NoInit(object):
+            no_init = None
+            klass_variable = 23
             def change(self):
-                self.global = 1
+                self.klass_variable = 1
             def read(self):
-                return self.global
+                return self.klass_variable
+            def new_variable(self):
+                self.dynamic = True
+                return self._is_it_there()
+            def _is_it_there(self):
+                return self.dynamic
+        return NoInit()
 
-    def cannot_read_self_globals(self, topic):
+    def can_read_self_globals(self, topic):
+        expect(topic.read()).to_equal(23)
 
-    def do_not_have_a_state(self, topic):
+    def can_access_klass_variables(self, topic):
+        expect(topic.no_init).to_be_null()
 
     def can_create_object_variables_dynamically(self, topic):
+        expect(topic.new_variable()).to_be_true()
 
 
+
+@Vows.batch
 class ForNestedKlasses(Vows.Context):
+
     def topic(self):
-        class outer(object):
-            self.value = False
+        class Outer(object):
+            def __init__(self):
+                self.value = False
             def method(self):
                 return self.value
 
-            class inner():
-                self.value = True
-                def method(self):
-                    return self.value
-        return outer()
+            class Inner(object):
+                def __init__(self):
+                    self.inner_value = True
+                def inner_method(self):
+                    return self.inner_value
+        return Outer.Inner()
 
-    def inner_klass_isa_outer_klass(self, topic):
-        expect(topic.).is_instance_of()
+    def inner_klass_cannot_access_outer_klass(self, topic):
+        expect(topic.method()).to_be_an_error()
 
-    def inner_klass_accesses_outer_klass_by(self, topic):
-        expect(topic.).is_true()
-
-    def inner_klass_can_write_outer_klass(self, topic):
-        expect(topic.).
+    def inner_klass_cannot_write_outer_klass(self, topic):
+        expect(topic.value).to_be_an_error()
 
 
+
+@Vows.batch
 class KlassesWithStaticMethod(Vows.Context):
     def topic(self):
         class A(object):
@@ -66,5 +94,6 @@ class KlassesWithStaticMethod(Vows.Context):
                 print "called B"
 
     def enforce_order_in_declaration(self, topic):
-        expect(topic()).to_raise()
+        expect(topic).to_be_an_error()
+
 
