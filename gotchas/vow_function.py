@@ -2,6 +2,7 @@
 from pyvows import Vows, expect
 
 
+@Vows.batch
 class NestedFunctions(Vows.Context):
     def topic(self):
         def do():
@@ -10,11 +11,13 @@ class NestedFunctions(Vows.Context):
 
             job = "first job"
             return in_do(job)
+        return do
 
     def can_be_called_from_outer(self, topic):
-        expect(topic.do()).to_equal("did first job")
+        expect(topic()).to_equal("did first job")
 
 
+@Vows.batch
 class ImportInFunctionBlock(Vows.Context):
     def topic(self):
         def import_os():
@@ -22,8 +25,5 @@ class ImportInFunctionBlock(Vows.Context):
         return os.name
 
     def is_not_visible_outside_block(self, topic):
-        try:
-            expect(topic().to_raise(NameError)
-        except NameError:
-            print "os not known outside the block"
+        expect(topic).to_be_an_error_like(NameError)
 
