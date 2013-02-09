@@ -8,10 +8,12 @@ class Gun(object):
         self.force = 3
     def load_the(self, bullets):
         self.bullets += bullets
+    def is_loaded(self):
+        return (self.bullets > 0)
     def fire_it(self):
         fired = min(self.bullets, self.firerate)
         self.bullets = max(0, self.bullets - self.firerate)
-        return fired
+        return self
 
 class Target(object):
     def __init__(self):
