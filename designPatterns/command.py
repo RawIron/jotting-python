@@ -6,7 +6,7 @@ class Gun(object):
         self.bullets = 0
         self.firerate = 1
         self.force = 3
-    def load_the(self, bullets):
+    def load_with(self, bullets):
         self.bullets += bullets
     def is_loaded(self):
         return (self.bullets > 0)

@@ -29,7 +29,7 @@ class ForGuns(Vows.Context):
         def should_fire_only_once(self, topic):
             expect(topic.fire_it().is_loaded()).to_be_false()
 
-    class AGunWithTwoBullet(Vows.Context):
+    class AGunWithTwoBullets(Vows.Context):
         def topic(self):
             gun = c.Gun()
             gun.load_the(2)
