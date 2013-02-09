@@ -1,26 +1,39 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 
 class Gun(object):
-    def fire(self):
-        print "fired"
+    def __init__(self):
+        self.bullets = 0
+        self.firerate = 1
+        self.force = 3
+    def load_the(self, bullets):
+        self.bullets += bullets
+    def fire_it(self):
+        fired = min(self.bullets, self.firerate)
+        self.bullets = max(0, self.bullets - self.firerate)
+        return fired
 
 class Target(object):
-    def hit(self):
-        print "hit" 
+    def __init__(self):
+        self.health = 5
+    def got_hit_with(self, force):
+        self.health = max(0, self.health - force)
+    def is_destroyed(self):
+        return (self.health == 0)
 
 
 class GunFireCommand(object):
     def __init__(self, gun):
         self.receiver = gun
     def execute(self):
-        self.receiver.fire()
+        self.receiver.fire_it()
 
 class TargetHitCommand(object):
-    def __init__(self, target):
+    def __init__(self, target, with_force):
         self.receiver = target
+        self.force = with_force
     def execute(self):
-        self.receiver.hit()
+        self.receiver.got_hit_with(self.force)
 
 
 class Server(object):
@@ -41,7 +54,7 @@ if __name__ == '__main__':
     command = GunFireCommand(gun)
     server.sent(command)
     server.sent(command)
-    command = TargetHitCommand(target)
+    command = TargetHitCommand(target, 3)
     server.sent(command)
 
     server.run()
