@@ -14,6 +14,7 @@ class Achievements(Vows.Context):
             expect(topic.is_earned()).to_be_false()
 
 
+        # async processing breaks the two vows below (!)
         class ForAGunFiredOnce(Vows.Context):
             def topic(self, achievement):
                 g = Gun()

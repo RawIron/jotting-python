@@ -11,3 +11,4 @@ def test_gun_fires_once_with_one_bullet():
     gun.load_with(1)
     gun.fire_it()
     assert (gun.is_loaded() == False)
+

@@ -18,7 +18,7 @@ class Gun(object):
 class Target(object):
     def __init__(self):
         self.health = 5
-    def got_hit_with(self, force):
+    def got_hit_by(self, force):
         self.health = max(0, self.health - force)
     def is_destroyed(self):
         return (self.health == 0)
@@ -41,11 +41,18 @@ class TargetHitCommand(object):
 class Server(object):
     def __init__(self):
         self.commands = []
+    def _clear_commands(self):
+        self.commands = []
+    def has(self):
+        return (len(self.commands) > 0)
     def sent(self, command):
         self.commands.append(command)
+        return self
     def run(self):
         for command in self.commands:
             command.execute()
+        self._clear_commands()
+        return self
 
 
 if __name__ == '__main__':
