@@ -1,23 +1,28 @@
 
-from sim import Simulator, Job, Event
+from sim import Simulator, Worker, Event, DelayedAction
 
 
 def test_post(sim):
     events = []
 
-    job = Job()
-    job.load(8)
-    event = Event(1,job)
+    action = DelayedAction(sim, 8)
+    load = [action]
+    worker = Worker(load)
+    event = Event(1,worker)
     events.append(event)
 
-    job = Job()
-    job.load(1)
-    event = Event(7,job)
+    action = DelayedAction(sim, 3)
+    load = [action]
+    worker = Worker(load)
+    event = Event(7,worker)
     events.append(event)
 
-    job = Job()
-    job.load(12)
-    event = Event(3,job)
+    action = DelayedAction(sim, 2)
+    load = [action]
+    action = DelayedAction(sim, 9)
+    load.append(action)
+    worker = Worker(load)
+    event = Event(3,worker)
     events.append(event)
 
     for event in events:
