@@ -20,38 +20,42 @@ class DelayedAction(Action):
 
 
 class Worker(object):
-    def __init__(self, work_on):
-        self.load = work_on
+    def __init__(self, work_sequence):
+        self.actions = work_sequence
         self.next = 0
     def work(self, current_tick):
-        if len(self.load) < self.next + 1:
+        if len(self.actions) < self.next + 1:
+            print "event at: %d" % current_tick
             return
-        print current_tick
-        action = self.load[self.next]
+        print "event at: %d" % current_tick
+        action = self.actions[self.next]
         action.run(current_tick, self)
         self.next += 1
 
-
-class Simulator(object):
+class EventQueueMixin(object):
     def __init__(self):
         self.event_queue = []
-        self.ticks = 5
-        self.current_tick = 0
-
     def post(self, event):
-        heappush(self.event_queue, [event.at_tick, event])
-
-    def tick(self):
+        heappush(self.event_queue, (event.at_tick, event))
+    def pull(self):
         next_entry = heappop(self.event_queue)
         event = next_entry[1]
-        try:
-            self.current_tick = event.at_tick
-            event.worker.work(event.at_tick)
-        except IndexError:
-            pass
+        return event
+    
+
+class Simulator(EventQueueMixin):
+    def __init__(self):
+        super(Simulator, self).__init__()
+        self.ticks = 50
+        self.current_tick = 0
+
+    def tick(self):
+        event = self.pull()
+        self.current_tick = event.at_tick
+        event.worker.work(event.at_tick)
 
     def is_stopped(self):
-        return (self.current_tick > self.ticks)
+        return not self.event_queue or (self.current_tick > self.ticks)
 
     def simulate(self):
         while not self.is_stopped():
