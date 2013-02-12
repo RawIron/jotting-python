@@ -113,5 +113,23 @@ def test_take_action_decreases_quantity_in_resource():
     assert (not stash.put_queue)
     assert (not stash.take_queue)
 
+
+def test_take_action_on_empty_resource_keeps_request():
+    sim = Simulator()
+    events = []
+    load = []
+
+    stash = Resource(sim)
+    action = TakeAction(sim, stash, 4)
+    load.append(action)
+    worker = Worker(load)
+    event = Event(1,worker)
+    events.append(event)
+
+    _run_simulate(sim, events)
+
+    assert (stash.stock == 0)
+    assert (len(stash.take_queue) == 1)
+
     
     
