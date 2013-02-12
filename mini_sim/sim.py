@@ -50,6 +50,7 @@ class Resource(object):
             self.stock += request[0]
             event = Event(started_at + 1, request[1])
             self.sim.post(event)
+        self.put_queue = []
     def _serve_takes(self, started_at):
         pass
 

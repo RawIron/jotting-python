@@ -83,6 +83,9 @@ def test_sim_put_action():
 
     run_simulate(sim, events)
 
+    assert (stash.stock == 8)
+    assert (not stash.put_queue)
+
     
 
 def run_simulate(sim, events):
