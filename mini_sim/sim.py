@@ -20,14 +20,25 @@ class DelayAction(Action):
         event = Event(started_at + self.delay, worker)
         self.sim.post(event)
 
-class PutAction(Action):
+
+class ResourceAction(Action):
     def __init__(self, sim, resource, quantity, duration=0):
         self.sim = sim
         self.resource = resource
         self.quantity = quantity
         self.duration = duration
     def run(self, started_at, worker):
+        raise NotImplementedError
+
+class PutAction(ResourceAction):
+    def run(self, started_at, worker):
         self.resource.put(self.quantity, worker)
+        event = Event(started_at + self.duration, self.resource)
+        self.sim.post(event)
+
+class TakeAction(ResourceAction):
+    def run(self, started_at, worker):
+        self.resource.take(self.quantity, worker)
         event = Event(started_at + self.duration, self.resource)
         self.sim.post(event)
 
@@ -52,8 +63,12 @@ class Resource(object):
             self.sim.post(event)
         self.put_queue = []
     def _serve_takes(self, started_at):
-        pass
-
+        for key, request in enumerate(self.take_queue):
+            if request[0] <= self.stock:
+                del self.take_queue[key]
+                self.stock -= request[0]
+                event = Event(started_at + 1, request[1])
+                self.sim.post(event)
 
 
 class Worker(object):

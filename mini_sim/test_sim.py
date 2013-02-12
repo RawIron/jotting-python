@@ -43,7 +43,14 @@ def test_event_queue_smallest_is_always_first():
     assert (eo_5 == e_5)
 
 
-def test_sim():
+def _run_simulate(sim, events):
+    for event in events:
+        sim.post(event)
+    sim.simulate()
+
+
+
+def test_delay_action():
     sim = Simulator()
     events = []
 
@@ -67,10 +74,10 @@ def test_sim():
     event = Event(3,worker)
     events.append(event)
 
-    run_simulate(sim, events)
+    _run_simulate(sim, events)
 
 
-def test_sim_put_action():
+def test_put_action_increases_quantity_in_resource():
     sim = Simulator()
     events = []
 
@@ -81,15 +88,30 @@ def test_sim_put_action():
     event = Event(1,worker)
     events.append(event)
 
-    run_simulate(sim, events)
+    _run_simulate(sim, events)
 
     assert (stash.stock == 8)
     assert (not stash.put_queue)
 
+
+def test_take_action_decreases_quantity_in_resource():
+    sim = Simulator()
+    events = []
+
+    stash = Resource(sim)
+    action = PutAction(sim, stash, 8)
+    load = [action]
+    action = TakeAction(sim, stash, 4)
+    load.append(action)
+    worker = Worker(load)
+    event = Event(1,worker)
+    events.append(event)
+
+    _run_simulate(sim, events)
+
+    assert (stash.stock == 4)
+    assert (not stash.put_queue)
+    assert (not stash.take_queue)
+
     
-
-def run_simulate(sim, events):
-    for event in events:
-        sim.post(event)
-    sim.simulate()
-
+    
