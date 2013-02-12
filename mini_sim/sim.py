@@ -10,13 +10,49 @@ class Event(object):
 
 class Action(object): pass
 
-class DelayedAction(Action):
+class NullAction(Action): pass
+
+class DelayAction(Action):
     def __init__(self, sim, delay):
         self.sim = sim
         self.delay = delay
     def run(self, started_at, worker):
         event = Event(started_at + self.delay, worker)
         self.sim.post(event)
+
+class PutAction(Action):
+    def __init__(self, sim, resource, quantity, duration=0):
+        self.sim = sim
+        self.resource = resource
+        self.quantity = quantity
+        self.duration = duration
+    def run(self, started_at, worker):
+        self.resource.put(self.quantity, worker)
+        event = Event(started_at + self.duration, self.resource)
+        self.sim.post(event)
+
+
+class Resource(object):
+    def __init__(self, sim):
+        self.sim = sim
+        self.stock = 0
+        self.put_queue = []
+        self.take_queue = []
+    def put(self, quantity, worker):
+        self.put_queue.append((quantity, worker))
+    def take(self, quantity, worker):
+        self.take_queue.append((quantity, worker))
+    def work(self, current_tick):
+        self._serve_puts(current_tick)
+        self._serve_takes(current_tick)
+    def _serve_puts(self, started_at):
+        for request in self.put_queue:
+            self.stock += request[0]
+            event = Event(started_at + 1, request[1])
+            self.sim.post(event)
+    def _serve_takes(self, started_at):
+        pass
+
 
 
 class Worker(object):

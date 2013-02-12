@@ -1,5 +1,5 @@
 
-from sim import Simulator, Worker, Event, DelayedAction, EventQueueMixin
+from sim import *
 
 
 def test_event_queue_what_goes_in_comes_out():
@@ -47,29 +47,46 @@ def test_sim():
     sim = Simulator()
     events = []
 
-    action = DelayedAction(sim, 8)
+    action = DelayAction(sim, 8)
     load = [action]
     worker = Worker(load)
     event = Event(1,worker)
     events.append(event)
 
-    action = DelayedAction(sim, 3)
+    action = DelayAction(sim, 3)
     load = [action]
     worker = Worker(load)
     event = Event(7,worker)
     events.append(event)
 
-    action = DelayedAction(sim, 2)
+    action = DelayAction(sim, 2)
     load = [action]
-    action = DelayedAction(sim, 9)
+    action = DelayAction(sim, 9)
     load.append(action)
     worker = Worker(load)
     event = Event(3,worker)
     events.append(event)
 
+    run_simulate(sim, events)
+
+
+def test_sim_put_action():
+    sim = Simulator()
+    events = []
+
+    stash = Resource(sim)
+    action = PutAction(sim, stash, 8)
+    load = [action]
+    worker = Worker(load)
+    event = Event(1,worker)
+    events.append(event)
+
+    run_simulate(sim, events)
+
+    
+
+def run_simulate(sim, events):
     for event in events:
         sim.post(event)
-
     sim.simulate()
 
-test_sim()
