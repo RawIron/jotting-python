@@ -40,13 +40,33 @@ def intersect_lookup(a, b):
   return intersect
 
 
+def intersect_merge(a,b):
+  if len(a) < len(b):
+    outer = sorted(a)
+    inner = sorted(b)
+  else:
+    outer = sorted(b)
+    inner = sorted(a)
+
+  intersect = []
+  i = 0
+  for item in outer:
+    while (i < len(inner) and item != inner[i]):
+      i += 1
+    if i < len(inner):
+      intersect.append(item)
+    elif i == len(inner):
+      break
+  return intersect
+
+
 def intersect_comprehension(a, b):
   if len(a) < len(b):
     return [item for item in a if item in b]
   else:
     return [item for item in b if item in a]
 
-intersects = [intersect_lookup, intersect_comprehension,]
+intersects = [intersect_lookup, intersect_comprehension, intersect_merge]
 
 
 def test_intersect_many():
@@ -55,6 +75,12 @@ def test_intersect_many():
   for intersect in intersects:
     assert sorted(intersect(a_list, b_list)) == [1,2]
     assert sorted(intersect(b_list, a_list)) == [1,2]
+
+def test_intersect_identical():
+  a_list = [1,2,3]
+  b_list = [1,2,3]
+  for intersect in intersects:
+    assert sorted(intersect(a_list, b_list)) == [1,2,3]
 
 def test_intersect_empty():
   a_list = [1,2,3]
