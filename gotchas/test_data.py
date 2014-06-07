@@ -6,6 +6,15 @@ def test_append_to_empty_list():
   assert len(a_list) == 1
 
 
+def test_append_in_function():
+  def append_to(a):
+    a.append(2)
+    return a
+  a_list = [1]
+  assert append_to(a_list) == [1,2]
+  assert id(append_to(a_list)) == id(a_list)
+
+
 def test_split():
   a_list = [1,2,3,4]
   head_list = []
@@ -62,13 +71,24 @@ def test_intersect_one():
     assert sorted(intersect(b_list, a_list)) == [2]
 
 
+def union_mutable(a,b):
+  a.extend(b)
+  return a
+
+def union_immutable(a,b):
+  return (a + b)
+
+unions = [union_mutable, union_immutable,]
+
 def test_union_empty():
-  a_list = [1,2,3]
-  b_list = []
-  assert sorted(a_list + b_list) == [1,2,3,]
+  for union in unions:
+    a_list = [1,2,3]
+    b_list = []
+    assert sorted(union(a_list, b_list)) == [1,2,3,]
 
 def test_union_many():
-  a_list = [1,2,3]
-  b_list = [2,5,1,8,]
-  assert sorted(a_list + b_list) == [1,1,2,2,3,5,8,]
+  for union in unions:
+    a_list = [1,2,3]
+    b_list = [2,5,1,8,]
+    assert sorted(union(a_list, b_list)) == [1,1,2,2,3,5,8,]
 
