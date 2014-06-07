@@ -37,24 +37,38 @@ def intersect_comprehension(a, b):
   else:
     return [item for item in b if item in a]
 
-intersect = intersect_lookup
+intersects = [intersect_lookup, intersect_comprehension,]
 
 
-def test_intersect_many_elements():
+def test_intersect_many():
   a_list = [1,2,3]
   b_list = [2,5,1,8,]
-  assert sorted(intersect(a_list, b_list)) == [1,2]
-  assert sorted(intersect(b_list, a_list)) == [1,2]
+  for intersect in intersects:
+    assert sorted(intersect(a_list, b_list)) == [1,2]
+    assert sorted(intersect(b_list, a_list)) == [1,2]
 
 def test_intersect_empty():
   a_list = [1,2,3]
   b_list = []
-  assert sorted(intersect(a_list, b_list)) == []
-  assert sorted(intersect(b_list, a_list)) == []
+  for intersect in intersects:
+    assert sorted(intersect(a_list, b_list)) == []
+    assert sorted(intersect(b_list, a_list)) == []
 
-def test_intersect_one_element():
+def test_intersect_one():
   a_list = [1,2,3]
   b_list = [2]
-  assert sorted(intersect(a_list, b_list)) == [2]
-  assert sorted(intersect(b_list, a_list)) == [2]
+  for intersect in intersects:
+    assert sorted(intersect(a_list, b_list)) == [2]
+    assert sorted(intersect(b_list, a_list)) == [2]
+
+
+def test_union_empty():
+  a_list = [1,2,3]
+  b_list = []
+  assert sorted(a_list + b_list) == [1,2,3,]
+
+def test_union_many():
+  a_list = [1,2,3]
+  b_list = [2,5,1,8,]
+  assert sorted(a_list + b_list) == [1,1,2,2,3,5,8,]
 

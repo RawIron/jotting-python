@@ -12,6 +12,7 @@ class Action(object): pass
 
 class NullAction(Action): pass
 
+
 class DelayAction(Action):
     def __init__(self, sim, delay):
         self.sim = sim
