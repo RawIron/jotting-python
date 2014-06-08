@@ -42,3 +42,12 @@ def test_challenge12_forloop():
     else:
       groups[len(name)] = [name,]
   assert groups[4] == ["Samu", "Ravi",]
+
+def test_challenge12_collections():
+  names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
+  from collections import defaultdict
+  groups = defaultdict(list)
+  for name in names:
+    groups[len(name)].append(name)
+  assert groups[4] == ["Samu", "Ravi",]
+

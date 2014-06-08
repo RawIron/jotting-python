@@ -10,3 +10,7 @@ def test_dict_uniqlist():
   a_list = ["egg", "apple", "bread", "egg",]
   a_dict = dict([(food,1) for food in a_list])
   assert a_dict == {"apple":1, "bread":1, "egg":1,}
+
+def test_dict_keeps_latest():
+  a_list = [("egg", 0.12), ("egg", 0.34),]
+  assert dict(a_list) == {"egg": 0.34,}
