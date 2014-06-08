@@ -1,5 +1,6 @@
 
 # Challenge 2: Indexed Filtering
+#
 # Find all the names in the array "names" where the length of the 
 # name is less than or equal to the index of the element + 1.
 
@@ -10,6 +11,7 @@ def test_challenge2():
 
 
 # Challenge 3: Selecting/Mapping
+#
 # Say we have a list of names and we would like to print "Hello" in 
 # front of all the names:
 # List<string> nameList1 = new List(){ "Anders", "David", "James",
@@ -27,3 +29,16 @@ def test_challenge3_map():
   assert  messages == ["Hello, Sam", "Hello, Pamela",]
 
 
+# Challenge 12: Grouping by a Criterium
+#
+# Group the elements of a collection of strings by their length.
+
+def test_challenge12_forloop():
+  names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
+  groups = {}
+  for name in names:
+    if len(name) in groups:
+      groups[len(name)].append(name)
+    else:
+      groups[len(name)] = [name,]
+  assert groups[4] == ["Samu", "Ravi",]
