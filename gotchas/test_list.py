@@ -78,9 +78,8 @@ def test_intersect_many():
 
 def test_intersect_identical():
   a_list = [1,2,3]
-  b_list = [1,2,3]
   for intersect in intersects:
-    assert sorted(intersect(a_list, b_list)) == [1,2,3]
+    assert sorted(intersect(a_list, a_list)) == [1,2,3]
 
 def test_intersect_empty():
   a_list = [1,2,3]
