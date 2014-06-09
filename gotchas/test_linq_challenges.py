@@ -43,6 +43,15 @@ def test_challenge12_forloop():
       groups[len(name)] = [name,]
   assert groups[4] == ["Samu", "Ravi",]
 
+def test_challenge12_forloop_short():
+  names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
+  groups = {}
+  for name in names:
+    groups.setdefault(len(name),[]).append(name)
+  assert groups[4] == ["Samu", "Ravi",]
+  assert groups[3] == ["Sam",]
+  assert 1 not in groups
+
 def test_challenge12_collections():
   names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
   from collections import defaultdict
@@ -50,6 +59,7 @@ def test_challenge12_collections():
   for name in names:
     groups[len(name)].append(name)
   assert groups[4] == ["Samu", "Ravi",]
+  assert 1 not in groups
 
 def test_challenge12_itertools():
   names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
@@ -59,4 +69,15 @@ def test_challenge12_itertools():
   for k,iter in groupby(sorted(names_len), key=lambda s:s[0]):
     groups.setdefault(k, list(v[1] for v in iter))
   assert groups[4] == ["Ravi", "Samu",]
+  assert 1 not in groups
+
+
+# Challenge 13: Filter Distinct Elements
+# 
+# Obtain all the distinct elements from a collection.
+
+def test_challenge13():
+  songs = ["Song#1", "Song#2", "Song#2", "Song#2", "Song#3", "Song#1"]
+  uniq_songs = ["Song#1", "Song#2", "Song#3",]
+  assert uniq_songs == ["Song#1", "Song#2", "Song#3",]
 
