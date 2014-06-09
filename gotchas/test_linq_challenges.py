@@ -51,3 +51,12 @@ def test_challenge12_collections():
     groups[len(name)].append(name)
   assert groups[4] == ["Samu", "Ravi",]
 
+def test_challenge12_itertools():
+  names = ["Sam", "Samuel", "Samu", "Ravi", "Ratna", "Barsha"]
+  from itertools import groupby
+  names_len = [(len(name), name) for name in names]
+  groups = {}
+  for k,iter in groupby(sorted(names_len), key=lambda s:s[0]):
+    groups.setdefault(k, list(v[1] for v in iter))
+  assert groups[4] == ["Ravi", "Samu",]
+
