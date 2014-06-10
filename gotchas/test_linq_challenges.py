@@ -76,8 +76,8 @@ def test_challenge12_itertools():
 # 
 # Obtain all the distinct elements from a collection.
 
-def test_challenge13():
+def test_challenge13_set():
   songs = ["Song#1", "Song#2", "Song#2", "Song#2", "Song#3", "Song#1"]
-  uniq_songs = ["Song#1", "Song#2", "Song#3",]
-  assert uniq_songs == ["Song#1", "Song#2", "Song#3",]
+  uniq_songs = set(songs)
+  assert sorted(uniq_songs) == ["Song#1", "Song#2", "Song#3",]
 
