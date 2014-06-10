@@ -1,4 +1,3 @@
-
 from mongokit import Connection, Document, IS
 
 
@@ -48,9 +47,7 @@ class MongoConnector(Connector):
         return mongo_connection
 
 
-c = MongoConnector(mongo_server, debug)
-connection = c.connect()
-
+connector = MongoConnector(mongo_server, debug)
 
 #players_dbname = mongo_server['database']
 #players_collection = mongo_server['collection']

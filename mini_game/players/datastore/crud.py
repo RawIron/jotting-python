@@ -1,8 +1,7 @@
+from mongodb import Document, connector
 
-from mongodb import Document, connection
 
-
-@connection.register
+@connector.connect().register
 class PlayerIo(Document):
     __database__ = 'playground'
     __collection__ = 'players'
@@ -10,7 +9,7 @@ class PlayerIo(Document):
 
     @staticmethod
     def factory(init_player):
-        p = connection.PlayerIo()
+        p = connector.connect().PlayerIo()
         for key, value in init_player.iteritems():
             p[key] = value
         p.save()
@@ -31,13 +30,13 @@ class DictFilter(CrudFilter):
 
 class IoCrud(object):
     def create(self, init_player):
-        return connection.PlayerIo.factory(init_player)
+        return connector.connect().PlayerIo.factory(init_player)
 
     def read(self, filter=None):
         if not filter:
-            return connection.PlayerIo.find()
+            return connector.connect().PlayerIo.find()
         this = filter.where()
-        return connection.PlayerIo.find(this)
+        return connector.connect().PlayerIo.find(this)
 
     def update(self, filter=None):
         pass

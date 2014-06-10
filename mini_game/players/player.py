@@ -1,13 +1,23 @@
+from datetime import date
 import datastore.crud as ds
 
 
-class Player(object):
+class PersistentObject(object):
+
+    def __init__(self, ds):
+        self.ds = ds
+    def save(self):
+        return self.ds.save(self)
+
+
+class Player(PersistentObject):
+
     id = 0
     name = ""
     email = ""
     password = ""
-    createdAt = 
-    lastPlayedAt =
+    createdAt = date.today()
+    lastPlayedAt = date.today()
     totalSessions = 0
     totalSessionTime = 0
     totalActions = 0
@@ -28,14 +38,8 @@ class Player(object):
     totalCoinsEarned = 0
     totalCoinsOut = 0
 
-    def __init__(self, ds):
-        self.ds = ds
 
-    def save(self):
-        return self.ds.save(self)
-
-
-class FacebookUser(object):
+class FacebookUser(PersistentObject):
     playerId = 0
     id = 0
     name = ""
@@ -46,7 +50,7 @@ class FacebookUser(object):
     age = 0
 
 
-class Avatar(object):
+class Avatar(PersistentObject):
     playerId = 0
     id = 0
     hairstyleId = 0

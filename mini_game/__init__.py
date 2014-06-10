@@ -1,5 +1,5 @@
 
-import playground.players
+import players.player
 import playground.players.datastore as _ds
 
 __all__ = ['forAll',]
