@@ -1,4 +1,3 @@
-
 from heapq import heappush, heappop
 
 
@@ -85,6 +84,7 @@ class Worker(object):
         action.run(current_tick, self)
         self.next += 1
 
+
 class EventQueueMixin(object):
     def __init__(self):
         self.event_queue = []
@@ -94,6 +94,8 @@ class EventQueueMixin(object):
         next_entry = heappop(self.event_queue)
         event = next_entry[1]
         return event
+    def is_empty():
+        return not self.event_queue
     
 
 class Simulator(EventQueueMixin):
@@ -108,7 +110,7 @@ class Simulator(EventQueueMixin):
         event.worker.work(event.at_tick)
 
     def is_stopped(self):
-        return not self.event_queue or (self.current_tick > self.ticks)
+        return self.is_empty() or (self.current_tick > self.ticks)
 
     def simulate(self):
         while not self.is_stopped():

@@ -1,46 +1,4 @@
-
 from sim import *
-
-
-def test_event_queue_what_goes_in_comes_out():
-    eq = EventQueueMixin()
-    e_1 = Event(1,1)
-    eq.post(e_1)
-    eo_1 = eq.pull()
-    assert (eo_1 == e_1)
-
-
-def test_event_queue_smallest_of_two_comes_out_first():
-    eq = EventQueueMixin()
-    e_1 = Event(1,1)
-    eq.post(e_1)
-    e_3 = Event(3,3)
-    eq.post(e_3)
-    eo_1 = eq.pull()
-    assert (eo_1 == e_1)
-
-
-def test_event_queue_smallest_is_always_first():
-    eq = EventQueueMixin()
-    e_3 = Event(3,3)
-    eq.post(e_3)
-
-    e_1 = Event(1,1)
-    eq.post(e_1)
-    e_7 = Event(7,7)
-    eq.post(e_7)
-    eo_1 = eq.pull()
-    assert (eo_1 == e_1)
-
-    e_9 = Event(9,9)
-    eq.post(e_9)
-    e_5 = Event(5,5)
-    eq.post(e_5)
-    eo_3 = eq.pull()
-    assert (eo_3 == e_3)
-
-    eo_5 = eq.pull()
-    assert (eo_5 == e_5)
 
 
 def _run_simulate(sim, events):
@@ -80,10 +38,11 @@ def test_delay_action():
 def test_put_action_increases_quantity_in_resource():
     sim = Simulator()
     events = []
+    load = []
 
     stash = Resource(sim)
     action = PutAction(sim, stash, 8)
-    load = [action]
+    load.append(action)
     worker = Worker(load)
     event = Event(1,worker)
     events.append(event)
@@ -97,10 +56,11 @@ def test_put_action_increases_quantity_in_resource():
 def test_take_action_decreases_quantity_in_resource():
     sim = Simulator()
     events = []
+    load = []
 
     stash = Resource(sim)
     action = PutAction(sim, stash, 8)
-    load = [action]
+    load.append(action)
     action = TakeAction(sim, stash, 4)
     load.append(action)
     worker = Worker(load)
@@ -130,6 +90,4 @@ def test_take_action_on_empty_resource_keeps_request():
 
     assert (stash.stock == 0)
     assert (len(stash.take_queue) == 1)
-
-    
     
