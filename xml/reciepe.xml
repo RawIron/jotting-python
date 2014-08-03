@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<SetOfRecipie>
+
+	<recipie>
+		<id> 1 </id>
+		<name> Apple Pie </name>
+		
+	</recipie>
+	
+	<recipie>
+		<!-- recipie header -->
+		<id> 2 </id>
+		<name> Apple Cake </name>
+		<abstract> a moist sugary cake. </abstract>
+		<time>
+			<prepare> 30 </prepare>
+			<metric> min </metric>
+			<cook> 40 </cook>
+			<metric> min </metric>
+		</time>
+		
+		<!-- recipie ingredients -->
+		<ListOfIngredient>
+			<ingredient>
+				<sequence_number> 1 </sequence_number>
+				<id> 1 </id>
+				<name> flour </name>
+				<amount> 3 </amount>
+				<metric> us cup </metric>
+			</ingredient>
+		</ListOfIngredient>
+		
+		<!-- recipie preparation steps -->
+		<ListOfStep>
+			<step>
+			<sequence_number> 1 </sequence_number>
+			<time> 20 </time>
+			<metric> min </metric>
+			<ListOfUsedIngredient>
+				<ingredient>
+				<sequence_number> 1 </sequence_number>
+				<ingredient_id> 1 </ingredient_id>
+				</ingredient>
+			</ListOfUsedIngredient>
+			<description> heat the oven </description>
+			</step>
+		</ListOfStep>
+		
+	</recipie>
+	
+</SetOfRecipie>
