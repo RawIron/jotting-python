@@ -1,2 +1,6 @@
 nose
 pyvows
+mock
+
+pymongo
+mongokit
