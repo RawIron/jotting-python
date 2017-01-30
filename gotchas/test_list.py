@@ -6,6 +6,20 @@ def test_append_to_empty_list():
   assert len(a_list) == 1
 
 
+def test_append_empty_list():
+  a_list = [1]
+  a_list.append([])
+  assert a_list[1] == []
+  assert len(a_list) == 2
+
+
+def test_concat_empty_list():
+  a_list = [1]
+  a_list + []
+  assert a_list[0] == 1
+  assert len(a_list) == 1
+
+
 def test_append_in_function():
   def append_to(a):
     a.append(2)
