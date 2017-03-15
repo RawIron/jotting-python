@@ -5,4 +5,4 @@ install:
 
 # --with-doctest causes nosetests to execute all py modules
 # TODO make sure py modules do not get executed
-script: nosetests --with-doctest designPatterns gotchas
+script: nosetests --with-doctest design_patterns gotchas
