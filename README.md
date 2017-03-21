@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/RawIron/scratch-python.svg)](https://travis-ci.org/RawIron/scratch-python)
+[![Test Coverage](https://coveralls.io/repos/RawIron/scratch-python/badge.svg?branch=master&service=github)](https://coveralls.io/github/RawIron/scratch-python?branch=master)
 
 
 ## gotchas

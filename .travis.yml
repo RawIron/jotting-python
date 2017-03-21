@@ -5,4 +5,10 @@ install:
 
 # --with-doctest causes nosetests to execute all py modules
 # TODO make sure py modules do not get executed
-script: nosetests --with-doctest design_patterns gotchas
+# TODO run pyvows tests, nosetests ignores them
+script:
+    nosetests --with-doctest gotchas
+    nosetests --with-coverage --cover-package=design_patterns design_patterns
+
+after_success:
+    coveralls
