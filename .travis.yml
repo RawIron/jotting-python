@@ -9,6 +9,7 @@ install:
 script:
     - nosetests --with-doctest gotchas
     - nosetests --with-coverage --cover-package=design_patterns design_patterns
+    - nosetests jam
 
 after_success:
     - coveralls
