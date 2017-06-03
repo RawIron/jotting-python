@@ -16,11 +16,14 @@ def print_banner(headline, marker='*', filler='.:: '):
 
 
 def mastermind():
+    '''
+    blacks = correct digit, correct position within code
+    whites = correct digit at wrong position
+    '''
     import random
     from six.moves import input, range
 
     precision = 4
-    prompt = '> '
 
     def print_cracked(blacks, whites):
         print('*' * whites + '+' * blacks)
@@ -41,15 +44,22 @@ def mastermind():
         return (blacks + whites == precision)
 
 
+    def next_guess(tries):
+        prompt = '> '
+        return input(str(tries) + prompt)
+
+
+    def play(code, count_cracked, is_cracked, print_cracked):
+        tries = 0
+        blacks = 0
+        whites = 0
+        while not is_cracked(blacks, whites):
+            tries += 1
+            blacks, whites = count_cracked(next_guess(tries), code)
+            print_cracked(blacks, whites)
+
+
     code = [random.randint(0,9) for n in range(precision)]
 
-    tries = 0
-    blacks = 0
-    whites = 0
-    while not is_cracked(blacks, whites):
-        tries += 1
-        guess = input(str(tries) + prompt)
-        blacks, whites = count_cracked(guess, code)
-        print_cracked(blacks, whites)
-
+    play(code, count_cracked, is_cracked, print_cracked)
 
