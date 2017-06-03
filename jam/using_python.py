@@ -7,6 +7,10 @@ def _reverse_string(str):
     return str[::-1]
 
 
+def _copy_list(x):
+    return list(x)
+
+
 def print_banner(headline, marker='*', filler='.:: '):
     width = len(headline) + 2* len(filler)
 
