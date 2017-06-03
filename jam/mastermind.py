@@ -24,7 +24,7 @@ def count_cracked(guess, code):
     for ix, n in enumerate(guess):
         if code[ix] != -1 and int(n) in code:
             whites += 1
-            code[code.index(int(n))] = -1
+            code[code.index(int(n))] = -2
     return blacks, whites
 
 
@@ -51,5 +51,6 @@ def play(code, count_cracked, is_cracked, print_cracked):
         print_cracked(blacks, whites)
 
 
-play(generate_code(), count_cracked, is_cracked, print_cracked)
+if __name__ == "__main__":
+    play(generate_code(), count_cracked, is_cracked, print_cracked)
 
