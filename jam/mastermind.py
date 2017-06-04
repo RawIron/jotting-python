@@ -15,18 +15,34 @@ def print_cracked(blacks, whites):
 
 
 def count_cracked(guess, code):
-    _code = list(code)
-    blacks = 0
-    whites = 0
+    '''
+    use a list to store the cracked digits
+    mark blacks as 1
+    mark whites as 2
+    '''
+
+    def find_index(code, value, start):
+        try:
+            return code.index(int(value), start)
+        except ValueError:
+            return -1
+
+
+    cracked = [0]*len(code)
+
     for ix, n in enumerate(guess):
-        if int(n) == _code[ix]:
-            blacks += 1
-            _code[ix] = -1
+        if int(n) == code[ix]:
+            cracked[ix] = 1
+
     for ix, n in enumerate(guess):
-        if _code[ix] != -1 and int(n) in _code:
-            whites += 1
-            _code[_code.index(int(n))] = -2
-    return blacks, whites
+        if cracked[ix] != 1:
+            i = find_index(code, n, 0)
+            while i >= 0 and cracked[i] > 0:
+                i = find_index(code, n, i+1)
+            if i >= 0 and cracked[i] == 0:
+                cracked[i] = 2
+
+    return len([n for n in cracked if n == 1]), len([n for n in cracked if n == 2])
 
 
 def is_cracked(blacks, whites):
