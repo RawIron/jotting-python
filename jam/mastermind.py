@@ -16,7 +16,29 @@ def print_cracked(blacks, whites):
 
 def count_cracked(guess, code):
     '''
-    use a list to store the cracked digits
+    make a copy of the code
+    remove cracked digits from the copied code list
+    '''
+    _code = list(code)
+    blacks = 0
+    whites = 0
+
+    for ix, n in enumerate(guess):
+        if int(n) == _code[ix]:
+            blacks += 1
+            _code[ix] = -1
+
+    for ix, n in enumerate(guess):
+        if _code[ix] != -1 and int(n) in _code:
+            whites += 1
+            _code[_code.index(int(n))] = -2
+
+    return blacks, whites
+
+
+def count_cracked_separate_list(guess, code):
+    '''
+    use a separate list to store the cracked digits
     mark blacks as 1
     mark whites as 2
     '''
