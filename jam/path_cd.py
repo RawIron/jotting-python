@@ -25,30 +25,29 @@ class Path:
 
     @staticmethod
     def _build_path_list(path_str):
-        return path_str.strip().split(Path.SEPARATOR)
+        path_list = path_str.strip().split(Path.SEPARATOR)
+        if Path._is_absolute_path(path_str):
+            path_list = path_list[1:]
+        return path_list
 
     @staticmethod
     def _build_path_string(path_list):
         return Path.SEPARATOR + Path.SEPARATOR.join(path_list)
 
     @staticmethod
-    def _is_absolute_path(p):
-        return p[0] == ''
+    def _is_absolute_path(path_str):
+        return path_str.startswith(Path.SEPARATOR)
 
     def __init__(self, path):
         self.current_path = path
 
     def cd(self, path):
         new_path = Path._build_path_list(self.current_path)
-        if Path._is_absolute_path(new_path):
-            # remove root from absolute path
-            new_path = new_path[1:]
 
         change_path = Path._build_path_list(path)
-        if Path._is_absolute_path(change_path):
+        if Path._is_absolute_path(path):
             # wipe current path
             new_path = []
-            change_path = change_path[1:]
 
         # /    + .. = /
         # /a/b + .. = /a
