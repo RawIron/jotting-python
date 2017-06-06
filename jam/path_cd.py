@@ -23,34 +23,45 @@ should display '/a/b/c/x'.
 class Path:
     SEPARATOR = '/'
 
+    @staticmethod
+    def _build_path_list(path_str):
+        return path_str.strip().split(Path.SEPARATOR)
+
+    @staticmethod
+    def _build_path_string(path_list):
+        return Path.SEPARATOR.join([''] + path_list)
+
+    @staticmethod
+    def _is_absolute_path(p):
+        return p[0] == ''
+
     def __init__(self, path):
         self.current_path = path
 
-    def _parse_path_string(self, path_str):
-        return path_str.strip().split(Path.SEPARATOR)
-
-    def _build_path_string(self, p):
-        return Path.SEPARATOR.join([''] + p)
-
-    def cd(self, new_path):
-        current_path = self._parse_path_string(self.current_path)
-        if current_path[0] == '':
+    def cd(self, path):
+        new_path = Path._build_path_list(self.current_path)
+        if Path._is_absolute_path(new_path):
             # remove root from absolute path
-            current_path = current_path[1:]
-        tmp_path = self._parse_path_string(new_path)
+            new_path = new_path[1:]
+
+        change_path = Path._build_path_list(path)
+        if Path._is_absolute_path(change_path):
+            # wipe current path
+            new_path = []
 
         # /    + .. = /
         # /a/b + .. = /a
-        for item in tmp_path:
+        # /a   + b  = /a/b
+        # /a   + /b = /b
+        for item in change_path:
             if item == '..':
-                del(current_path[-1:])
+                del(new_path[-1:])
             else:
-                current_path.append(item)
-        self.current_path = self._build_path_string(current_path)
- 
+                new_path.append(item)
+        self.current_path = Path._build_path_string(new_path)
+
 
 path = Path('/a/b/c/d')
 path.cd('../x')
 
-print(path.current_path)
-
+rint(path.current_path)
