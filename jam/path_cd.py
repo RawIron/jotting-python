@@ -29,7 +29,7 @@ class Path:
 
     @staticmethod
     def _build_path_string(path_list):
-        return Path.SEPARATOR.join([''] + path_list)
+        return Path.SEPARATOR + Path.SEPARATOR.join(path_list)
 
     @staticmethod
     def _is_absolute_path(p):
@@ -48,6 +48,7 @@ class Path:
         if Path._is_absolute_path(change_path):
             # wipe current path
             new_path = []
+            change_path = change_path[1:]
 
         # /    + .. = /
         # /a/b + .. = /a
@@ -61,7 +62,8 @@ class Path:
         self.current_path = Path._build_path_string(new_path)
 
 
-path = Path('/a/b/c/d')
-path.cd('../x')
+if __name__ == "__main__":
+    path = Path('/a/b/c/d')
+    path.cd('../x')
 
-rint(path.current_path)
+    print(path.current_path)
