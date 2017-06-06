@@ -74,8 +74,41 @@ def iterate_list(x):
 
 
 def iterate_sorted_list(x):
+    def use_in_place(x):
+        for v in x.sort():
+            pass
+
     for v in sorted(x):
         pass
+
+
+def filter_list(x, f):
+    """ filter list with a callable f(a) which returns bool """
+    def use_filter(x, f):
+        return filter(f, x)
+
+    def use_iteration(x, f):
+        result = []
+        for n in x:
+            if f(n):
+                result.append(n)
+        return result
+
+    return [n for n in x if f(n)]
+
+
+def map_list(x, f):
+    """ map list with a callable f(a) """
+    def use_map(x, f):
+        return map(f, x)
+
+    def use_iteration(x, f):
+        result = []
+        for n in x:
+            result.append(f(n))
+        return result
+
+    return [f(n) for n in x]
 
 
 def iterate_dict(x):
@@ -116,4 +149,22 @@ def exchange_keys_with_unique_values_in_dict(x):
     keys and values are unique
     '''
     return dict((v,k) for k,v in x.iteritems())
+
+
+def call_func_with_tuple(x, f):
+    """
+    f(a,b) == f(*(a,b))
+    """
+    if not isinstance(x, tuple):
+        raise ValueError
+    return f(*x)
+
+
+def call_func_with_dict(x, f):
+    """
+    f(a,b) == f(**{'a': 2, 'b': 4})
+    """
+    if not isinstance(x, dict):
+        raise ValueError
+    return f(**x)
 
