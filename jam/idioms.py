@@ -22,19 +22,42 @@ def reverse_string(str):
     return str[::-1]
 
 
-def copy_list(x):
+class CopyList():
+
+    @staticmethod
     def use_constructor(x):
         return list(x)
 
+    @staticmethod
     def use_copy(x):
         import copy
         return copy.copy(x)
 
+    @staticmethod
     def use_deepcopy(x):
         import copy
         return copy.deepcopy(x)
 
-    return x[:]
+    @staticmethod
+    def use_idiom(x):
+        ''' shallow copy of a list '''
+        return x[:]
+
+
+copy_list = CopyList.use_idiom
+
+
+def get_static(cls):
+    import inspect
+    return inspect.getmembers(cls, predicate=inspect.isfunction)
+
+
+def copy_list_impl():
+    return dict(get_static(CopyList)).values()
+
+
+def is_unique_list(x):
+    return len(set(x)) == len(x)
 
 
 def count_list(x):
@@ -168,3 +191,14 @@ def call_func_with_dict(x, f):
         raise ValueError
     return f(**x)
 
+
+def create_hash_index_on_list(x):
+    def use_default_dict(x):
+        from collections import defaultdict
+        hindex = defaultdict(list)
+
+        for ix, key in enumerate(x):
+            hindex[key].append(ix)
+        return hindex
+
+    return use_default_dict(x)
