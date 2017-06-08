@@ -202,3 +202,15 @@ def create_hash_index_on_list(x):
         return hindex
 
     return use_default_dict(x)
+
+
+def convert_camel_to_underscore(str):
+    import re
+    pattern = re.compile(r'[A-Z][a-z]+')
+    # make first character upper case
+    str = str[0].upper() + str[1:]
+    return "_".join([word.lower() for word in pattern.findall(str)])
+
+
+def convert_underscore_to_camel():
+    return "".join([word.capitalize() for word in str.split('_')])
