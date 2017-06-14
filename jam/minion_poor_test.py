@@ -1,4 +1,4 @@
-import minion
+import minion_poor as minion
 
 
 def test_extract_vowels():
