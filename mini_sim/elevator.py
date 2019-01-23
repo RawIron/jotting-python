@@ -39,6 +39,22 @@ def test_scan_down_down_ground():
     moves = run(at_floor, to_floor, make_serve(use_scan), incoming)
     assert moves == [0, -1, -2, -1, 0]
 
+def test_scan_stay():
+    at_floor = 0
+    to_floor = 0
+    incoming = []
+    use_scan = make_scan()
+    moves = run(at_floor, to_floor, make_serve(use_scan), incoming)
+    assert moves == [0]
+
+def test_scan_up_up_down_down_ground():
+    at_floor = 0
+    to_floor = 3
+    incoming = [[2], [4,1], [3,5]]
+    use_scan = make_scan()
+    moves = run(at_floor, to_floor, make_serve(use_scan), incoming)
+    assert moves == [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0]
+
 """
     simulate one elevator
     an elevator is a device that
@@ -166,4 +182,6 @@ if __name__ == "__main__":
     test_fifo_up_down_up_ground()
     test_fifo_down_down_ground()
  
+    test_scan_stay()
     test_scan_down_down_ground()
+    test_scan_up_up_down_down_ground()
