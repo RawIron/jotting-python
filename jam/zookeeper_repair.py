@@ -86,7 +86,7 @@ def run_restore(zk, keys):
 
 def main(options):
     keys = options['KEYS']
-    zk = load_scenario_zoo()
+    zk = KazooClient(hosts='localhost:2181')
     zk.start()
 
     if options['--backup']:
@@ -120,46 +120,26 @@ class TestClient(object):
     def create(self, key, value):
         return value
 
-def test_backup(options):
-    keys = options['KEYS']
+def test_backup(keys):
     state = dict()
     for key in keys:
         state[key] = "a_test_value"
-    zk = load_scenario_backup_test(state)
+    zk = TestClient(state)
     zk.start()
-    options['--backup'] = True
-    options['--restore'] = False
     run_backup(zk, keys)
     zk.stop()
 
-def test_restore(options):
-    keys = options['KEYS']
+def test_restore(keys):
     state = dict()
-    zk = load_scenario_restore_test(state)
+    zk = TestClient(state)
     zk.start()
-    options['--backup'] = False
-    options['--restore'] = True
     run_restore(zk, keys)
     zk.stop()
 
 def run_tests(options):
-    test_backup(options)
-    test_restore(options)
-
-
-# INJECT
-
-def load_scenario_zoo():
-    zk = KazooClient(hosts='localhost:2181')
-    return zk
-
-def load_scenario_backup_test(state):
-    zk = TestClient(state)
-    return zk
-
-def load_scenario_restore_test(state):
-    zk = TestClient(state)
-    return zk
+    keys = options['KEYS']
+    test_backup(keys)
+    test_restore(keys)
 
 
 from docopt import docopt
