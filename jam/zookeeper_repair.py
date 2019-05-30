@@ -29,6 +29,8 @@ def write_bytes(zk, key, value):
 
 # BACKUP STORAGE
 
+STORAGE_DATA = "/tmp"
+
 def write_to(fname):
     def write(value):
         with open(fname, 'wb') as f:
@@ -43,7 +45,7 @@ def read_from(fname):
     return read
 
 def get_backup_for(key):
-    return "./{name}.dump".format(name=key.replace("/", "_"))
+    return "{path}/{name}.dump".format(path=STORAGE_DATA, name=key.replace("/", "_"))
 
 def create_write(key):
     backup = get_backup_for(key)
@@ -73,29 +75,51 @@ def create_restore_operation(zk):
         return restored_value
     return restore_value
 
-def run(keys, run_operation):
-    values = []
-    for key in keys:
-        values.append(run_operation(key))
-    return values
-
 
 def main(options, zk, keys):
-    if options['task'] == 'BACKUP':
+    if options['--backup']:
         backup_op = create_backup_operation(zk)
-        run(keys, backup_op)
+        map(backup_op, keys)
 
-    if options['task'] == 'RESTORE':
+    if options['--restore']:
         restore_op = create_restore_operation(zk)
-        run(keys, restore_op)
+        map(restore_op, keys)
+
+
+# TEST
+
+def test_backup(options):
+    keys = options['KEYS']
+    state = dict()
+    for key in keys:
+        state[key] = "a_test_value"
+    zk = load_scenario_backup_test(state)
+    zk.start()
+    options['--backup'] = True
+    options['--restore'] = False
+    main(options, zk, keys)
+    zk.stop()
+
+def test_restore(options):
+    keys = options['KEYS']
+    state = dict()
+    zk = load_scenario_restore_test(state)
+    zk.start()
+    options['--backup'] = False
+    options['--restore'] = True
+    main(options, zk, keys)
+    zk.stop()
+
+def run_tests(options):
+    test_backup(options)
+    test_restore(options)
 
 
 # INJECT
 
 def load_scenario_zoo():
-    keys = ["/archives/1", "/archives/2", "/archives/3"]
     zk = KazooClient(hosts='localhost:2181')
-    return zk, keys
+    return zk
 
 class Status(object):
     version = 0.1
@@ -117,25 +141,42 @@ class TestClient(object):
     def create(self, key, value):
         return value
 
-def load_scenario_backup_test():
-    keys = ["/archives/1", "/archives/2", "/archives/3"]
-    state = {"/archives/1": "full", "/archives/2": "empty", "/archives/3": "empty"}
+def load_scenario_backup_test(state):
     zk = TestClient(state)
-    return zk, keys
+    return zk
 
-def load_scenario_restore_test():
-    keys = ["/archives/1", "/archives/2", "/archives/3"]
-    state = dict()
+def load_scenario_restore_test(state):
     zk = TestClient(state)
-    return zk, keys
+    return zk
 
+
+from docopt import docopt
+
+_usage="""
+Backup or Restore Zookeeper keys
+
+Usage:
+  zookeeper_repair (--restore | --backup | --test) KEYS ...
+
+Arguments:
+  KEYS    list of keys
+
+Options:
+  -h --help   show this
+  --backup    backup keys
+  --restore   restore keys
+  --test      run tests
+"""
 
 if __name__ == '__main__':
-    options = {'task': 'RESTORE'}
+    options = docopt(_usage)
 
-    zk, keys = load_scenario_restore_test()
+    if options['--test']:
+        run_tests(options)
+        exit(1)
+
+    keys = options['KEYS']
+    zk = load_scenario_zoo()
     zk.start()
-
     main(options, zk, keys)
-
     zk.stop()
