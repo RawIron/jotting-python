@@ -2,7 +2,7 @@ import os
 from kazoo.client import KazooClient
 
 
-# ZOOKEEPER
+# ZOOKEEPER API
 
 def read_bytes(zk, key):
     if not zk.exists(key):
@@ -27,7 +27,7 @@ def write_bytes(zk, key, value):
     return zk.create(key, value)
 
 
-# BACKUP STORAGE
+# BACKUP STORAGE API
 
 STORAGE_DATA = "/tmp"
 
@@ -75,51 +75,30 @@ def create_restore_operation(zk):
         return restored_value
     return restore_value
 
-
-def main(options, zk, keys):
-    if options['--backup']:
+def run_backup(zk, keys):
         backup_op = create_backup_operation(zk)
         map(backup_op, keys)
 
-    if options['--restore']:
+def run_restore(zk, keys):
         restore_op = create_restore_operation(zk)
         map(restore_op, keys)
 
 
+def main(options):
+    keys = options['KEYS']
+    zk = load_scenario_zoo()
+    zk.start()
+
+    if options['--backup']:
+        run_backup(zk, keys)
+
+    if options['--restore']:
+        run_restore(zk, keys)
+
+    zk.stop()
+
+
 # TEST
-
-def test_backup(options):
-    keys = options['KEYS']
-    state = dict()
-    for key in keys:
-        state[key] = "a_test_value"
-    zk = load_scenario_backup_test(state)
-    zk.start()
-    options['--backup'] = True
-    options['--restore'] = False
-    main(options, zk, keys)
-    zk.stop()
-
-def test_restore(options):
-    keys = options['KEYS']
-    state = dict()
-    zk = load_scenario_restore_test(state)
-    zk.start()
-    options['--backup'] = False
-    options['--restore'] = True
-    main(options, zk, keys)
-    zk.stop()
-
-def run_tests(options):
-    test_backup(options)
-    test_restore(options)
-
-
-# INJECT
-
-def load_scenario_zoo():
-    zk = KazooClient(hosts='localhost:2181')
-    return zk
 
 class Status(object):
     version = 0.1
@@ -140,6 +119,39 @@ class TestClient(object):
         pass
     def create(self, key, value):
         return value
+
+def test_backup(options):
+    keys = options['KEYS']
+    state = dict()
+    for key in keys:
+        state[key] = "a_test_value"
+    zk = load_scenario_backup_test(state)
+    zk.start()
+    options['--backup'] = True
+    options['--restore'] = False
+    run_backup(zk, keys)
+    zk.stop()
+
+def test_restore(options):
+    keys = options['KEYS']
+    state = dict()
+    zk = load_scenario_restore_test(state)
+    zk.start()
+    options['--backup'] = False
+    options['--restore'] = True
+    run_restore(zk, keys)
+    zk.stop()
+
+def run_tests(options):
+    test_backup(options)
+    test_restore(options)
+
+
+# INJECT
+
+def load_scenario_zoo():
+    zk = KazooClient(hosts='localhost:2181')
+    return zk
 
 def load_scenario_backup_test(state):
     zk = TestClient(state)
@@ -173,10 +185,6 @@ if __name__ == '__main__':
 
     if options['--test']:
         run_tests(options)
-        exit(1)
+    else:
+        main(options)
 
-    keys = options['KEYS']
-    zk = load_scenario_zoo()
-    zk.start()
-    main(options, zk, keys)
-    zk.stop()
