@@ -42,3 +42,16 @@ def test_sub_wordbreak():
   line = 'one-\ntwo'
   replacer = re.compile('-\n')
   assert replacer.sub('-', line) == "one-two"
+
+
+def test_exact_2_ones():
+    pattern = r'1{2}'
+    matches = re.search(pattern, '1211')
+    assert(matches.group() == '11')
+
+def test_1_digit_1():
+    pattern = r'1[0-9]?1'
+    matches = re.search(pattern, '1211')
+    assert(matches.group() == '121')
+    matches = re.search(pattern, '1121')
+    assert(matches.group() == '11')
