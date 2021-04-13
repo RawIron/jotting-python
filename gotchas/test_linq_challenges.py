@@ -23,10 +23,15 @@ def test_challenge3_comprehension():
   messages = ["Hello, " + name for name in names]
   assert  messages == ["Hello, Sam", "Hello, Pamela",]
 
+def test_challenge3_generator():
+  names = ["Sam", "Pamela",]
+  messages = ("Hello, " + name for name in names)
+  assert  list(messages) == ["Hello, Sam", "Hello, Pamela",]
+
 def test_challenge3_map():
   names = ["Sam", "Pamela",]
   messages = map(lambda x: "Hello, " + x, names)
-  assert  messages == ["Hello, Sam", "Hello, Pamela",]
+  assert  list(messages) == ["Hello, Sam", "Hello, Pamela",]
 
 
 # Challenge 12: Grouping by a Criterium
