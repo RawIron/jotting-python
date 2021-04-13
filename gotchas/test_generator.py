@@ -24,10 +24,10 @@ def test_return_generator():
     my_list = [0,1,2,3]
     gen = g_return(my_list)
     assert my_list[0] == 3
-    assert gen.next() == 0
+    assert next(gen) == 0
 
 def test_yield():
     my_list = [0,1,2,3]
     gen = g_yield(my_list)
     assert my_list[0] == 0
-    assert gen.next() == 0
+    assert next(gen) == 0
