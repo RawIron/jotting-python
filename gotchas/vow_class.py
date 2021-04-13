@@ -1,4 +1,3 @@
-
 from pyvows import Vows, expect
 
 
@@ -86,12 +85,12 @@ class KlassesWithStaticMethod(Vows.Context):
             BWithStatic.call()
             @staticmethod
             def call():
-                print "called A"
+                print( "called A" )
 
         class BWithStatic(object):
             @staticmethod
             def call():
-                print "called B"
+                print( "called B" )
 
     def enforce_order_in_declaration(self, topic):
         expect(topic).to_be_an_error()
