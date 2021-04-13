@@ -1,2 +1,2 @@
-import player
+import mini_game.players.player
 

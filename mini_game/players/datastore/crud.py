@@ -1,15 +1,18 @@
-from mongodb import Document, connector
+'''
+    this is not working
+'''
+from mongoengine import Document, StringField, IntField, connect
 
+connect(db='playground')
+#  __collection__ = 'players'
 
-@connector.connect().register
 class PlayerIo(Document):
-    __database__ = 'playground'
-    __collection__ = 'players'
-    structure = {'id': int, 'name': unicode}
+    player_id = IntField()
+    name = StringField()
 
     @staticmethod
     def factory(init_player):
-        p = connector.connect().PlayerIo()
+        p = PlayerIo()
         for key, value in init_player.iteritems():
             p[key] = value
         p.save()
@@ -30,17 +33,16 @@ class DictFilter(CrudFilter):
 
 class IoCrud(object):
     def create(self, init_player):
-        return connector.connect().PlayerIo.factory(init_player)
+        return PlayerIo.factory(init_player)
 
     def read(self, filter=None):
         if not filter:
-            return connector.connect().PlayerIo.find()
+            return PlayerIo.find()
         this = filter.where()
-        return connector.connect().PlayerIo.find(this)
+        return PlayerIo.find(this)
 
     def update(self, filter=None):
         pass
 
     def delete(self, filter=None):
         pass
-

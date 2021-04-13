@@ -1,8 +1,8 @@
 import mock as m
-import players.datastore.player as pio
+import mini_game.players.datastore.player as pio
 
-import players
-import players.player as p
+import mini_game.players
+import mini_game.players.player as p
 
 
 def mock_save_ok():
@@ -30,7 +30,7 @@ def test_save_exception():
     assert (rc == True)
 
 def test_save_with_klass():
-    with m.patch("players.datastore.player.Player") as MockPlayer:
+    with m.patch("mini_game.players.datastore.player.Player") as MockPlayer:
         mock_player = MockPlayer.return_value
         mock_player.create.return_value = {}
         mock_player.all.return_value = {}

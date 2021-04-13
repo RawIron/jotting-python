@@ -3,9 +3,9 @@
 import setuptools
 import sys
 
-import playground as w
-from playground.aModule import simple, A
-import utils
+import mini_game as w
+import mini_game.utils
+from mini_game.aModule import simple, A
 
 
 a = [23, 45,]

@@ -1,14 +1,18 @@
-
-import players.player
-import playground.players.datastore as _ds
+import mini_game.players.player
+import mini_game.players.datastore as _ds
 
 __all__ = ['forAll',]
 
 def forAll():
-  print 'eeh'
+  print('eeh')
 
 def _invisible():
-    print 'not here'
+  print('not here')
 
+def do():
+  print("g called")
 
-print '__init__ loaded'
+class A():
+  pass
+
+print('__init__ loaded')

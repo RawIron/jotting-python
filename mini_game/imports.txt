@@ -1,5 +1,0 @@
-nose
-setuptools
-numpy
-scipy
-mongokit

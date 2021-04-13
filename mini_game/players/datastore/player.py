@@ -1,4 +1,4 @@
-import crud
+import mini_game.players.datastore.crud as crud
 
 
 class Player(object):
@@ -12,8 +12,7 @@ class Player(object):
     def all(self):
         all_players = self.crud.read()
         for player in all_players:
-            print player
+            print(player)
 
     def save(self):
         return self.crud.update(self)
-

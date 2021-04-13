@@ -1,5 +1,5 @@
 from datetime import date
-import datastore.crud as ds
+import mini_game.players.datastore.crud as ds
 
 
 class PersistentObject(object):
