@@ -77,9 +77,9 @@ class Worker(object):
         self.next = 0
     def work(self, current_tick):
         if len(self.actions) < self.next + 1:
-            print "event at: %d" % current_tick
+            print("event at: %d" % current_tick)
             return
-        print "event at: %d" % current_tick
+        print("event at: %d" % current_tick)
         action = self.actions[self.next]
         action.run(current_tick, self)
         self.next += 1
@@ -94,7 +94,7 @@ class EventQueueMixin(object):
         next_entry = heappop(self.event_queue)
         event = next_entry[1]
         return event
-    def is_empty():
+    def is_empty(self):
         return not self.event_queue
     
 
