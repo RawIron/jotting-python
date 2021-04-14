@@ -7,7 +7,6 @@ def _run_simulate(sim, events):
     sim.simulate()
 
 
-
 def test_delay_action():
     sim = Simulator()
     events = []
@@ -90,4 +89,3 @@ def test_take_action_on_empty_resource_keeps_request():
 
     assert (stash.stock == 0)
     assert (len(stash.take_queue) == 1)
-    
