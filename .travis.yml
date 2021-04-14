@@ -10,6 +10,8 @@ script:
     - nosetests --with-doctest gotchas
     - nosetests --with-coverage --cover-package=design_patterns design_patterns
     - nosetests jam
+    - nosetests cellular_automaton
+    - nosetests mini_sim
 
 after_success:
     - coveralls
