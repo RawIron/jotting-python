@@ -72,13 +72,16 @@ def run(m, n, data, rules):
         pprint.pprint(new_world)
 
 
+def main():
+    DATA = [(0,1),
+            (1,0), (1,1),
+            (3,1),
+            (4,2)]
 
-DATA = [(0,1),
-        (1,0), (1,1),
-        (3,1),
-        (4,2)]
+    INPUT = [(x,y,1) for x,y in DATA]
 
-INPUT = [(x,y,1) for x,y in DATA]
+    run(5, 5, INPUT, evaluate)
 
-run(5, 5, INPUT, evaluate)
 
+if __name__ == "__main__":
+    main()
