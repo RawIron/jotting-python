@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/RawIron/jotting-python.svg)](https://travis-ci.org/RawIron/jotting-python)
-[![Test Coverage](https://coveralls.io/repos/RawIron/jotting-python/badge.svg?branch=master&service=github)](https://coveralls.io/github/RawIron/jotting-python?branch=master)
+[![Test Coverage](https://coveralls.io/repos/github/RawIron/jotting-python/badge.svg?branch=master)](https://coveralls.io/github/RawIron/jotting-python?branch=master)
 
 ## setup
 ```
