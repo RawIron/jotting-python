@@ -3,7 +3,6 @@ pylint
 nose
 pyvows
 coveralls
-mock
 
 pymongo
 mongoengine
