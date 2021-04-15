@@ -3,8 +3,6 @@ language: python
 install:
     - python -m pip install -r requirements.txt
 
-# --with-doctest causes nosetests to execute all py modules
-# TODO make sure py modules do not get executed
 # TODO run pyvows tests, nosetests ignores them
 script:
     - nosetests --with-doctest gotchas
@@ -12,6 +10,7 @@ script:
     - nosetests jam
     - nosetests cellular_automaton
     - nosetests mini_sim
+    - nosetests mini_game
 
 after_success:
     - coveralls

@@ -19,7 +19,7 @@ class PlayerIo(Document):
         return p
 
 
-class CrudFilter(object):
+class CrudFilter():
     def where(self):
         raise NotImplementedError
 
@@ -31,7 +31,7 @@ class DictFilter(CrudFilter):
     pass
 
 
-class IoCrud(object):
+class IoCrud():
     def create(self, init_player):
         return PlayerIo.factory(init_player)
 
