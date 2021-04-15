@@ -1,9 +1,8 @@
 from datetime import date
-import mini_game.players.datastore.crud as ds
+import players.datastore.crud as ds
 
 
 class PersistentObject(object):
-
     def __init__(self, ds):
         self.ds = ds
     def save(self):
@@ -11,7 +10,6 @@ class PersistentObject(object):
 
 
 class Player(PersistentObject):
-
     id = 0
     name = ""
     email = ""

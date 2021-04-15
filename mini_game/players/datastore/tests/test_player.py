@@ -1,5 +1,5 @@
 import unittest.mock as mock
-from mini_game.players.datastore.player import Player
+from players.datastore.player import Player
 
 
 @mock.patch('mini_game.players.datastore.player.crud.IoCrud')

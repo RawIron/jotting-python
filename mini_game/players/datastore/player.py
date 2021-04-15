@@ -1,4 +1,4 @@
-import mini_game.players.datastore.crud as crud
+import players.datastore.crud as crud
 
 
 class Player():

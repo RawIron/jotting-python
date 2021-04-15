@@ -1,5 +1,8 @@
-import mini_game.players.player
-import mini_game.players.datastore as _ds
+import sys,os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+import players.player
+import players.datastore as _ds
 
 __all__ = ['forAll',]
 

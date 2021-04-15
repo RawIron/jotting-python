@@ -1,6 +1,6 @@
-import mini_game.players.datastore.crud
+import players.datastore.crud
 
 def store():
-  print ("is stored")
+  print("is stored")
 
-print ("datastore loaded")
+print("datastore loaded")

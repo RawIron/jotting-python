@@ -1,8 +1,6 @@
 import unittest.mock as mock
-import mini_game.players.datastore.player as pio
-
-import mini_game.players
-import mini_game.players.player as p
+import players.datastore.player as pio
+import players.player as p
 
 
 def mock_save_ok():
